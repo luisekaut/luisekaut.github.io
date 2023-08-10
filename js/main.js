@@ -4,17 +4,7 @@ jQuery(document).ready(function($){
         resizing = false;
     //cache jQuery objects
     var imageComparisonContainers = $('.cd-image-container');
-    //check if the .cd-image-container is in the viewport 
-    //if yes, animate it
-    checkPosition(imageComparisonContainers);
-    $(window).on('scroll', function(){
-        if( !scrolling) {
-            scrolling =  true;
-            ( !window.requestAnimationFrame )
-                ? setTimeout(function(){checkPosition(imageComparisonContainers);}, 100)
-                : requestAnimationFrame(function(){checkPosition(imageComparisonContainers);});
-        }
-    });
+    imageComparisonContainers.addClass('is-visible');
     
     //make the .cd-handle element draggable and modify .cd-resize-img width according to its position
     imageComparisonContainers.each(function(){
@@ -24,24 +14,10 @@ jQuery(document).ready(function($){
 
     //upadate images label visibility
     $(window).on('resize', function(){
-        if( !resizing) {
-            resizing =  true;
-            ( !window.requestAnimationFrame )
-                ? setTimeout(function(){checkLabel(imageComparisonContainers);}, 100)
-                : requestAnimationFrame(function(){checkLabel(imageComparisonContainers);});
-        }
-    });
-
-    function checkPosition(container) {
-        container.each(function(){
-            var actualContainer = $(this);
-            if( $(window).scrollTop() + $(window).height()*0.5 > actualContainer.offset().top) {
-                actualContainer.addClass('is-visible');
-            }
+        requestAnimationFrame(function(){
+            checkLabel(imageComparisonContainers)
         });
-
-        scrolling = false;
-    }
+    });
 
     function checkLabel(container) {
         container.each(function(){
